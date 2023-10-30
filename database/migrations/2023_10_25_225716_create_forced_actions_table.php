@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('article_stocks', function (Blueprint $table) {
+        Schema::create('forced_actions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Article::class)->references('id')->on('articles')->onDelete('cascade');
-            $table->bigInteger('current_stock');
-            $table->unsignedSmallInteger('min_stock');
+            $table->foreignIdFor(User::class)->references('id')->on('users')->onDelete('cascade');
+            $table->mediumText('action');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_stocks');
+        Schema::dropIfExists('forced_actions');
     }
 };

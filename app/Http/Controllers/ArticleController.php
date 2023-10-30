@@ -91,7 +91,13 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+//        $article->stock->delete();
+//
+//        $article->price->delete();
+//
+//        $article->delete();
+
+        return Redirect::route('articles.index');
     }
 
     public function refill(ArticleRefillRequest $request, Article $article)

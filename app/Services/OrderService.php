@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\OrderCreateException;
 use App\Http\Requests\OrderStoreRequest;
 use App\Models\Article;
 use App\Models\ArticleStock;
@@ -35,18 +36,16 @@ class OrderService
                 ];
             });
 
-            $newOrder->customers()->sync($request->customer_id);
-
             session()->put('cart', collect());
 
-            smilify('success', 'You are successfully reconnected');
+            smilify('success', 'Ordine creato correttamente');
 
             DB::commit();
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::error('articolo non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            Log::error('ordine non creato', [$e->getMessage()]);
+            throw new OrderCreateException();
         }
     }
 

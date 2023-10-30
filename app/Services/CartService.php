@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\ArticleUpdateException;
+use App\Exceptions\CartRemoveException;
 use App\Exceptions\QuantityExceedException;
 use App\Http\Requests\CartStoreRequest;
 use App\Models\Article;
@@ -71,9 +73,21 @@ class CartService
 
     public function removeFromCart(string $idx)
     {
-        $idx === 0 ? session()->put('cart', collect()) : session()->get('cart')->forget($idx);
+        try {
+            DB::beginTransaction();
 
-        smilify('success', 'Articolo rimosso dal carrello');
+            $idx === 0 ? session()->put('cart', collect()) : session()->get('cart')->forget($idx);
+
+            smilify('success', 'Articolo rimosso dal carrello');
+
+            DB::commit();
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            Log::error('articolo non rimosso dal carrello', [$e->getMessage()]);
+            throw new CartRemoveException();
+        }
 
     }
 }

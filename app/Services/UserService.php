@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\UserCreateException;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 use Exception;
@@ -33,8 +34,8 @@ class UserService
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::error('cliente non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            Log::error('utente non inserito', [$e->getMessage()]);
+            throw new UserCreateException();
         }
     }
 

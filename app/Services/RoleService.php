@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\RoleCreateException;
+use App\Exceptions\RoleUpdateException;
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
 use Exception;
@@ -29,7 +31,7 @@ class RoleService
 
             DB::rollBack();
             Log::error('Ruolo non creato', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            throw new RoleCreateException();
         }
     }
 
@@ -49,7 +51,7 @@ class RoleService
 
             DB::rollBack();
             Log::error('Permesso non assegnato', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            throw new RoleUpdateException();
         }
     }
 }

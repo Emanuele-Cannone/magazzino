@@ -15,12 +15,14 @@
 
 <div class="bg-gray-200 dark:bg-gray-800 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8">
 
-    <div>
-        @livewire('articles-under-provision-list')
-    </div>
+    @can('Gestione Carrello')
+        <div>
+            <livewire:articles-under-provision-list />
+        </div>
+    @endcan
 
     <div>
-        @livewire('todo-list')
+        <livewire:todo-list />
     </div>
 
 </div>

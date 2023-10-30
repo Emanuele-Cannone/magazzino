@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CartStoreRequest;
+use App\Models\Article;
 use App\Models\Customer;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -22,10 +23,21 @@ class CartController extends Controller
      */
     public function index()
     {
-        return view('cart.index', [
-            'cartItems' => $this->cartService->cartResolve(),
-            'customers' => Customer::all()
-        ]);
+        $customers = Customer::all();
+
+        if ((session()->get('cart')->count() <= 0)) {
+            return Redirect::route('articles.index', [
+                'articles' => Article::all()
+            ]);
+        } else {
+            return view('cart.index', [
+                'cartItems' => $this->cartService->cartResolve(),
+                'customers' => $customers->map(fn($customer) => [
+                    'id' => $customer->id,
+                    'text' => $customer->name
+                ])->toArray()
+            ]);
+        }
     }
 
     /**
@@ -76,6 +88,10 @@ class CartController extends Controller
     public function destroy(string $cart)
     {
         $this->cartService->removeFromCart($cart);
-        return Redirect::route('cart.index');
+
+        return session()->get('cart')->count() > 0 ?
+            Redirect::route('cart.index') :
+            Redirect::route('articles.index');
+
     }
 }

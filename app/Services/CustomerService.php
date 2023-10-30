@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\CustomerCreateException;
+use App\Exceptions\CustomerUpdateException;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
 use App\Models\Customer;
@@ -26,7 +28,7 @@ class CustomerService
 
             DB::rollBack();
             Log::error('cliente non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            throw new CustomerCreateException();
         }
     }
 
@@ -48,7 +50,7 @@ class CustomerService
 
             DB::rollBack();
             Log::error('cliente non modificato', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            throw new CustomerUpdateException();
         }
     }
 }

@@ -14,9 +14,12 @@ class Order extends Model
 
     ];
 
-    public function customers()
+    public function articles()
     {
-        return $this->belongsToMany(Customer::class);
+        return $this->hasMany(OrderArticle::class);
     }
-
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

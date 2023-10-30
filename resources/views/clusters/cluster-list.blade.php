@@ -13,9 +13,11 @@
                         <td class="px-6 py-3">
                             Nome
                         </td>
-                        <td class="px-6 py-3">
-                            Azioni
-                        </td>
+                        @canany(['Modifica Gruppo','Elimina Gruppo'])
+                            <td class="px-6 py-3">
+                                Azioni
+                            </td>
+                        @endcanany
                     </tr>
                     </thead>
                     <tbody>
@@ -24,25 +26,31 @@
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-200">{{ ++$key }}</th>
                             <td class="px-6 py-4">{{ $cluster->name}}</td>
-                            <td class="px-6 py-4 flex justify-center">
-                                <a href="{{ route('clusters.edit', $cluster->id) }}" class="mr-2">
-                                    <button
-                                        class="focus:outline-none text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
-                                    >
-                                        <i class="fa-solid fa-edit"></i>
-                                    </button>
-                                </a>
-                                <form action="{{ route('clusters.destroy', $cluster->id) }}" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button
-                                        type="submit"
-                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                    >
-                                        <i class="fa-regular fa-trash-can"></i>
-                                    </button>
-                                </form>
+                            @canany(['Modifica Gruppo','Elimina Gruppo'])
+                                <td class="px-6 py-4 flex justify-center">
+                                @can('Modifica Gruppo')
+                                    <a href="{{ route('clusters.edit', $cluster->id) }}" class="mr-2">
+                                        <button
+                                            class="focus:outline-none text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
+                                        >
+                                            <i class="fa-solid fa-edit"></i>
+                                        </button>
+                                    </a>
+                                @endcan
+                                @can('Elimina Gruppo')
+                                    <form action="{{ route('clusters.destroy', $cluster->id) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button
+                                            type="submit"
+                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                        >
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                @endcan
                             </td>
+                            @endcanany
                         </tr>
                     @endforeach
                     </tbody>

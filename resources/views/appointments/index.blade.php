@@ -13,10 +13,9 @@
             const appointmentModalEl = document.getElementById('appointmentModal');
             const appointmentModal = new Modal(appointmentModalEl);
 
-            @can('Modifica Appuntamento')
-                const appointmentEditModalEl = document.getElementById('editAppointmentModal');
-                const appointmentEditModal = new Modal(appointmentEditModalEl);
-            @endcan
+
+            const appointmentEditModalEl = document.getElementById('editAppointmentModal');
+            const appointmentEditModal = new Modal(appointmentEditModalEl);
 
             let appointmentId = 0;
 
@@ -72,21 +71,20 @@
                 },
                 eventDrop: function(info) {
 
-                    @can('Modifica Appuntamento')
-                        appointmentId = info.event.id;
+                    appointmentId = info.event.id;
 
-                        document.getElementById('editAppointment').setAttribute('action', window.location.href + '/' + appointmentId);
+                    document.getElementById('editAppointment').setAttribute('action', window.location.href + '/' + appointmentId);
 
-                        document.getElementById('eventEditTitle').value = info.event.title;
+                    document.getElementById('eventEditTitle').value = info.event.title;
 
-                        document.getElementById('eventEditDateFrom').valueAsDate = info.event.start;
-                        document.getElementById('eventEditTimeFrom').value = addZero(info.event.start.getHours()).toString() + ':' + addZero(info.event.start.getMinutes()).toString();
+                    document.getElementById('eventEditDateFrom').valueAsDate = info.event.start;
+                    document.getElementById('eventEditTimeFrom').value = addZero(info.event.start.getHours()).toString() + ':' + addZero(info.event.start.getMinutes()).toString();
 
-                        document.getElementById('eventEditDateTo').valueAsDate = info.event.end;
-                        document.getElementById('eventEditTimeTo').value = addZero(info.event.end.getHours()).toString() + ':' + addZero(info.event.end.getMinutes()).toString();
+                    document.getElementById('eventEditDateTo').valueAsDate = info.event.end;
+                    document.getElementById('eventEditTimeTo').value = addZero(info.event.end.getHours()).toString() + ':' + addZero(info.event.end.getMinutes()).toString();
 
-                        appointmentEditModal.show();
-                    @endcan
+                    appointmentEditModal.show();
+
                 },
                 buttonText: {
                     today: 'oggi',
@@ -229,15 +227,17 @@
                             </div>
                         </div>
                         <!-- Modal footer -->
-                        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button x-show="deleteButton" type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Elimina</button>
-                            <div x-show="!deleteButton" class="flex items-center">
-                                <div class="text-white">Swipe to delete</div>
-                                <button @swiperight class="ml-2 text-md text-white">
-                                    <i class="fa-solid fa-angles-right fa-beat-fade"></i>
-                                </button>
+                        @can('Elimina Appuntamento')
+                            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <button x-show="deleteButton" type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Elimina</button>
+                                <div x-show="!deleteButton" class="flex items-center">
+                                    <div class="text-white">Swipe to delete</div>
+                                    <button @swiperight class="ml-2 text-md text-white">
+                                        <i class="fa-solid fa-angles-right fa-beat-fade"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        @endcan
                     </div>
                 </form>
             </div>

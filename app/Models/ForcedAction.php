@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class ForcedAction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'email'
+        'user_id',
+        'action'
     ];
 
-    public function orders()
+    public function user()
     {
-        return $this->belongsToMany(Order::class);
+        return $this->belongsTo(User::class);
     }
-
 }

@@ -10,7 +10,9 @@ use App\Http\Requests\ArticleRefillRequest;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Models\Article;
+use App\Models\ForcedAction;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -41,6 +43,11 @@ class ArticleService
             $clusters = collect(json_decode($request->clusters))->map(fn ($cluster) => $cluster->id)->toArray();
 
             $newArticle->clusters()->sync($clusters);
+
+            ForcedAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'creato articolo: '.$request->name.' - min_quantity: '.$request->min_quantity.' - stock: '.$request->quantity.' - prezzo: '.$request->price
+            ]);
 
             smilify('success', 'Articolo creato correttamente');
             DB::commit();
@@ -79,7 +86,12 @@ class ArticleService
 
             $article->clusters()->sync($clusters);
 
-            smilify('success', 'Articolo non aggiornato');
+            ForcedAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'modificato articolo: '.$request->name.' - min_quantity: '.$request->min_quantity.' - stock: '.$request->quantity.' - prezzo: '.$request->price
+            ]);
+
+            smilify('success', 'Articolo aggiornato');
             DB::commit();
 
         } catch (Exception $e) {
@@ -101,6 +113,11 @@ class ArticleService
             $article->price->update([
                     'price' => $request->price
                 ]);
+
+            ForcedAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'refill articolo: '.$article->name.' - quantity: '.$request->quantity.' - prezzo: '.$request->price
+            ]);
 
             smilify('success', 'Articolo aggiunto nello stock');
 

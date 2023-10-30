@@ -18,21 +18,40 @@
                     <x-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
                         Ricambi
                     </x-nav-link>
+                    @canany(['Crea Cliente','Modifica Cliente','Elimina Cliente'])
                     <x-nav-link href="{{ route('customers.index') }}" :active="request()->routeIs('customers.index')">
                         Clienti
                     </x-nav-link>
+                    @endcanany
+                    @canany(['Crea Utente','Modifica Utente','Elimina Utente'])
                     <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                         Utenti
                     </x-nav-link>
+                    @endcanany
+                    @canany(['Crea Gruppo','Modifica Gruppo','Elimina Gruppo'])
                     <x-nav-link href="{{ route('clusters.index') }}" :active="request()->routeIs('clusters.index')">
-                        Cluster
+                        Gruppi
                     </x-nav-link>
+                    @endcanany
+                    @canany(['Crea Ruolo','Modifica Ruolo','Elimina Ruolo'])
                     <x-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.index')">
                         Ruoli
                     </x-nav-link>
+                    @endcanany
+                    @can('Visualizza Ordini')
+                    <x-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.index')">
+                        Ordini
+                    </x-nav-link>
+                    @endcan
+                    @can('Visualizza Log')
+                    <x-nav-link href="{{ route('actions') }}" :active="request()->routeIs('actions')">
+                        Azioni
+                    </x-nav-link>
+                    @endcan
                     <x-nav-link href="{{ route('appointments.index') }}" :active="request()->routeIs('appointments.index')">
                         Agenda
                     </x-nav-link>
+
 {{--                    <x-nav-link href="{{ route('worksheets.index') }}" :active="request()->routeIs('worksheets.index')">--}}
 {{--                        Lavorazioni--}}
 {{--                    </x-nav-link>--}}
@@ -92,16 +111,18 @@
                     </div>
                 @endif
 
-                @if(session()->get('cart') && session()->get('cart')->count() > 0)
-                    <x-nav-link href="{{ route('cart.index') }}"
-                        class="relative border-0 border-b-0"
-                    >
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="absolute inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 border-2 border-white rounded-full -top-2.5 -right-2.5 dark:border-gray-900">
-                            {{ session()->get('cart')->count() }}
-                        </span>
-                    </x-nav-link>
-                @endif
+                @can('Gestione Carrello')
+                    @if(session()->get('cart') && session()->get('cart')->count() > 0)
+                        <x-nav-link href="{{ route('cart.index') }}"
+                            class="relative border-0 border-b-0"
+                        >
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="absolute inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 border-2 border-white rounded-full -top-2.5 -right-2.5 dark:border-gray-900">
+                                {{ session()->get('cart')->count() }}
+                            </span>
+                        </x-nav-link>
+                    @endif
+                @endcan
 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
@@ -177,30 +198,50 @@
             <x-responsive-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
                 Ricambi
             </x-responsive-nav-link>
+            @canany(['Crea Cliente','Modifica Cliente','Elimina Cliente'])
             <x-responsive-nav-link href="{{ route('customers.index') }}" :active="request()->routeIs('customers.index')">
                 Clienti
             </x-responsive-nav-link>
+            @endcanany
+            @canany(['Crea Utente','Modifica Utente','Elimina Utente'])
             <x-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                 Utenti
             </x-responsive-nav-link>
+            @endcanany
+            @canany(['Crea Gruppo','Modifica Gruppo','Elimina Gruppo'])
             <x-responsive-nav-link href="{{ route('clusters.index') }}" :active="request()->routeIs('clusters.index')">
-                Cluster
+                Gruppi
             </x-responsive-nav-link>
+            @endcanany
+            @canany(['Crea Ruolo','Modifica Ruolo','Elimina Ruolo'])
             <x-responsive-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.index')">
                 Ruoli
             </x-responsive-nav-link>
+            @endcanany
+            @can('Visualizza Ordini')
+            <x-responsive-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.index')">
+                Ordini
+            </x-responsive-nav-link>
+            @endcan
+            @can('Visualizza Log')
+            <x-responsive-nav-link href="{{ route('actions') }}" :active="request()->routeIs('actions')">
+                Azioni
+            </x-responsive-nav-link>
+            @endcan
             <x-responsive-nav-link href="{{ route('appointments.index') }}" :active="request()->routeIs('appointments.index')">
                 Agenda
             </x-responsive-nav-link>
 {{--            <x-responsive-nav-link href="{{ route('worksheets.index') }}" :active="request()->routeIs('worksheets.index')">--}}
 {{--                Lavorazioni--}}
 {{--            </x-responsive-nav-link>--}}
-            @if(session()->get('cart') && session()->get('cart')->count() > 0)
-                <x-responsive-nav-link href="{{ route('cart.index') }}">
+            @can('Gestione Carrello')
+                @if(session()->get('cart') && session()->get('cart')->count() > 0)
+                    <x-responsive-nav-link href="{{ route('cart.index') }}">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </x-responsive-nav-link>
                     <i class="fa-solid fa-cart-shopping"></i>
-                </x-responsive-nav-link>
-                <i class="fa-solid fa-cart-shopping"></i>
-            @endif
+                @endif
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

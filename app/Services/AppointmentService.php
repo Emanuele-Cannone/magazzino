@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Exceptions\AppointmentCreateException;
+use App\Exceptions\AppointmentUpdateException;
 use App\Http\Requests\AppointmentStoreRequest;
 use App\Http\Requests\AppointmentUpdateRequest;
 use App\Models\Appointment;
@@ -65,7 +66,7 @@ class AppointmentService
 
             DB::rollBack();
             Log::error('appuntamento non modificato', [$e->getMessage()]);
-            throw new AppointmentCreateException();
+            throw new AppointmentUpdateException();
         }
     }
 

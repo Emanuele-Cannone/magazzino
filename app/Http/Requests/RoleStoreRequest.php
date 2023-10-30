@@ -12,7 +12,7 @@ class RoleStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->can('Crea Ruolo ');
+        return Auth::user()->can('Crea Ruolo');
     }
 
     /**

@@ -29,12 +29,17 @@ return new class extends Migration
             ('Crea Cliente', 'web', now(), now()),
             ('Modifica Cliente', 'web', now(), now()),
             ('Elimina Cliente', 'web', now(), now()),
+            ('Visualizza Articolo', 'web', now(), now()),
             ('Crea Articolo', 'web', now(), now()),
             ('Modifica Articolo', 'web', now(), now()),
+            ('Refill Articolo', 'web', now(), now()),
             ('Elimina Articolo', 'web', now(), now()),
             ('Crea Gruppo', 'web', now(), now()),
             ('Modifica Gruppo', 'web', now(), now()),
-            ('Elimina Gruppo', 'web', now(), now())
+            ('Elimina Gruppo', 'web', now(), now()),
+            ('Gestione Carrello', 'web', now(), now()),
+            ('Visualizza Log', 'web', now(), now()),
+            ('Visualizza Ordini', 'web', now(), now())
         ");
     }
 

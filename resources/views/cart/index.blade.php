@@ -1,3 +1,19 @@
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            $('#customer').select2({
+                placeholder: 'Seleziona un cliente',
+                data: @js($customers),
+                allowClear: true
+            });
+        });
+
+    </script>
+@endsection
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
@@ -67,15 +83,7 @@
                                 <form action="{{ route('orders.store') }}" method="post">
                                     @method('POST')
                                     @csrf
-                                    <select name="customer_id"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required
-                                    >
-                                        <option value="" disabled selected>Seleziona cliente</option>
-                                        @foreach($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <select name="customer_id" id="customer" class="w-full"></select>
                                     <button type="submit"
                                             class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900"
                                     >

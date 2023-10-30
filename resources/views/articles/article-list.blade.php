@@ -2,15 +2,17 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <x-input class="my-2 w-64" type="text" placeholder="Cerca per nome, codice, gruppo" wire:model="searchArticle"
                  x-model="newArticle"/>
-        @if($addArticle)
-            <a x-bind:href="'{{ route('articles.create', '') }}' + '?article=' + newArticle" >
-                <button
-                    class="ml-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                >
-                    Aggiungi
-                </button>
-            </a>
-        @endif
+        @can('Crea Articolo')
+            @if($addArticle)
+                <a x-bind:href="'{{ route('articles.create', '') }}' + '?article=' + newArticle" >
+                    <button
+                        class="ml-2 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    >
+                        Aggiungi
+                    </button>
+                </a>
+            @endif
+        @endcan
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
@@ -32,12 +34,16 @@
                         <th scope="col" class="px-6 py-3">
                             Unità
                         </th>
+                        @can('Gestione Carrello')
                         <th scope="col" class="px-6 py-3">
                             Prezzo
                         </th>
+                        @endcan
+                        @canany(['Gestione Carrello','Refill Articolo','Modifica Articolo','Elimina Articolo'])
                         <th scope="col" class="px-6 py-3">
                             Azioni
                         </th>
+                        @endcanany
                     </tr>
                     </thead>
                     <tbody>
@@ -56,9 +62,13 @@
                                 @endforeach
                             </td>
                             <td class="px-6 py-4">{{ $article->stock->current_stock}}</td>
-                            <td class="px-6 py-4">{{ $article->price->price}}€</td>
+                            @can('Gestione Carrello')
+                                <td class="px-6 py-4">{{ $article->price->price}}€</td>
+                            @endcan
+                            @canany(['Gestione Carrello','Elimina Articolo','Refill Articolo','Modifica Articolo'])
                             <td class="px-6 py-4 flex items-center justify-center">
                                 <div class="flex flex-col">
+                                    @can('Gestione Carrello')
                                     <div>
                                         <button x-on:click="articleId = {{ $article->id }}, maxCount = {{ $article->stock->current_stock}}"
                                                 data-modal-target="addToCartModal" data-modal-toggle="addToCartModal"
@@ -66,7 +76,9 @@
                                             <i class="fa-solid fa-cart-plus"></i>
                                         </button>
                                     </div>
+                                    @endcan
                                     <div class="my-1 flex justify-around items-center w-full">
+                                        @can('Refill Articolo')
                                         <div class="mr-1">
                                             <button
                                                 x-on:click="articleCode = {{ $article->code }}, articleId = {{ $article->id }}"
@@ -76,6 +88,8 @@
                                                 <i class="fa-solid fa-dolly"></i>
                                             </button>
                                         </div>
+                                        @endcan
+                                        @can('Modifica Articolo')
                                         <div class="ml-1">
                                             <a href="{{ route('articles.edit', $article->id) }}">
                                                 <button
@@ -85,7 +99,9 @@
                                                 </button>
                                             </a>
                                         </div>
+                                        @endcan
                                     </div>
+                                    @can('Elimina Articolo')
                                     <div>
                                         <button x-on:click="articleId = {{ $article->id }}"
                                                 data-modal-target="deleteArticleModal" data-modal-toggle="deleteArticleModal"
@@ -94,8 +110,10 @@
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </div>
+                                    @endcan
                                 </div>
                             </td>
+                            @endcanany
                         </tr>
                     @endforeach
                     </tbody>

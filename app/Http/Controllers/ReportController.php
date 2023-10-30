@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\User;
-use App\Models\Worksheet;
 use Illuminate\Http\Request;
 
-class WorksheetController extends Controller
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('worksheets.index', ['worksheets' => Worksheet::with('worksheetStatus', 'customer', 'appointment')]);
+        return view('report');
     }
 
     /**
@@ -22,12 +19,7 @@ class WorksheetController extends Controller
      */
     public function create()
     {
-        return view('worksheets.create',
-            [
-                'customers' => Customer::all(),
-                'users' => User::all()
-            ]
-        );
+        //
     }
 
     /**

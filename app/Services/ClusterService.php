@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\ClusterCreateException;
+use App\Exceptions\ClusterRemoveException;
+use App\Exceptions\ClusterUpdateException;
 use App\Http\Requests\ClusterStoreRequest;
 use App\Http\Requests\ClusterUpdateRequest;
 use App\Models\Cluster;
@@ -19,15 +22,15 @@ class ClusterService
 
             Cluster::create($request->all());
 
-            smilify('success', 'You are successfully reconnected');
+            smilify('success', 'Gruppo creato correttamente');
 
             DB::commit();
 
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::error('articolo non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            Log::error('gruppo non creato', [$e->getMessage()]);
+            throw new ClusterCreateException();
         }
     }
 
@@ -40,15 +43,15 @@ class ClusterService
 
             $cluster->update($request->all());
 
-            smilify('success', 'You are successfully reconnected');
+            smilify('success', 'Gruppo modificato correttamente');
 
             DB::commit();
 
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::error('articolo non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            Log::error('gruppo non modificato', [$e->getMessage()]);
+            throw new ClusterUpdateException();
         }
     }
     public function delete(string $id): void
@@ -60,15 +63,15 @@ class ClusterService
 
             $cluster->delete();
 
-            smilify('success', 'You are successfully reconnected');
+            smilify('success', 'Gruppo eliminato correttamente');
 
             DB::commit();
 
         } catch (Exception $e) {
 
             DB::rollBack();
-            Log::error('articolo non inserito', [$e->getMessage()]);
-//            throw new ArticleCreateException();
+            Log::error('gruppo non eliminato', [$e->getMessage()]);
+            throw new ClusterRemoveException();
         }
     }
 }
